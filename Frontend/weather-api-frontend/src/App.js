@@ -1,6 +1,7 @@
 import './App.css';
 import ForecastButton from './components/forecast-button';
 import DailyWeatherButton from './components/daily-weather-button';
+import BarChartPlaceholder from './components/bar-chart';
 
 function App() {
   return (
@@ -8,8 +9,9 @@ function App() {
       <h1>Hello, this is my React project</h1>
       <ForecastButton />
       <DailyWeatherButton/>
+      <BarChartPlaceholder/>
     </div>
   );
 }
-
+  
 export default App;
