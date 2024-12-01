@@ -12,3 +12,4 @@ This is a project to show of my skills in Python, Scraping from API-s, visualizi
 -api key-t lehetne ugye egy sessionstorage-ban tárolni, vagy mégjobb lenne mondjuk egy JWT token, amiben a user data mellé bedobjuk a tokent
 - esetleg ha nagyobb/komplexebb app lenne, akkor egy main.py hasznos lehet, de itt szvsz elég volt egy app.py
 - oszlopdiagrammokat hasznaltam a frontenden, egy kutatas kimutatta, hogy ezt a legkonnyebb leolvasni az embereknek
+- lehetne nagyobb projectnel, mondjuk minden ticketnel egy feature branchet csinalni, kulon dev környezetet, és abba mergelni bele a brancheket eloszor
