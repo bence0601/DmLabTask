@@ -1,7 +1,8 @@
 import './App.css';
 import ForecastButton from './components/forecast-button';
 import DailyWeatherButton from './components/daily-weather-button';
-import BarChartPlaceholder from './components/bar-chart-temp';
+import TempBarChart from './components/bar-chart-temp';
+import SearchBar from './components/city-searc-bar';
 
 function App() {
   return (
@@ -9,7 +10,8 @@ function App() {
       <h1>Hello, this is my React project</h1>
       <ForecastButton />
       <DailyWeatherButton/>
-      <BarChartPlaceholder/>
+      <TempBarChart/>
+      <SearchBar/>
     </div>
   );
 }
