@@ -54,6 +54,9 @@ class DataCollector:
         date_format = "%Y-%m-%d"
         date_list = [(today - timedelta(days=i)).strftime(date_format) for i in range(7)]
         
+        all_data = []  # Lista az összes nap adatainak tárolására
+
+        
         for day in date_list:
             full_url = f"{url}?key={apikey}&q={city}&aqi=no&dt={day}"
             try:
@@ -67,11 +70,12 @@ class DataCollector:
                 
                 data = response.json()
                 self.weather_data.append(data)  
+                all_data.append(data)  # Az aktuális nap adatait hozzáadjuk az összeshez
+
 
                 CityDataManager.addCityToDb(data)
 
                 print(f"Weather data for {city} on {day} fetched successfully.")
-                return data
             
             except requests.exceptions.HTTPError as errh:
                 print(f"HTTP Error: {errh} - Could not fetch data for {city} on {day}")
@@ -81,3 +85,5 @@ class DataCollector:
                 print(f"Error: {err} - Could not fetch data for {city} on {day}")
                 # Handle any other errors (like connectivity issues)
                 raise Exception(f"API hiba: {response.status_code}") from err
+            
+        return all_data  # Az összes nap adatainak visszaadása
