@@ -25,9 +25,9 @@ A frontend még nem készült el teljesen, de az alapötletet megvalósítottam.
 
 **Technikai Részletek**
 1. Előkészületek
-API Kulcs: A WeatherAPI oldalán regisztrálva API kulcsot kaptunk, amit az alkalmazás az .env fájlban tárol.
-Adatbázis: MSSQL adatbázist használtam, amelyet konténerizáltam, és az adatbázis kapcsolatot szintén az .env fájlban adtam meg.
-Base URL: A WeatherAPI History URL verizóját szintén az .env fájlban tároljuk.
+API Kulcs: A WeatherAPI oldalán regisztrálva API kulcsot kaptunk, amit az alkalmazás az .env fájlban tárol. **https://www.weatherapi.com/signup.aspx**
+Adatbázis: MSSQL adatbázist használtam, amelyet konténerizáltam, és az adatbázis kapcsolatot szintén az .env fájlban adtam meg. 
+Base URL: A WeatherAPI History URL verizóját szintén az .env fájlban tároljuk. **https://www.weatherapi.com/api-explorer.aspx#history** innen lehet kimásolni
 2. Konténerizálás és CI/CD
 A projekt konténerizált verzióját egy Dockerfile tartalmazza a Data Collection Service számára.
 A CI/CD pipeline megépítése nem történt meg, de szükséges lett volna a projekt többi szervizének konténerizálása és egy megfelelő pipeline kialakítása, hogy automatikusan épüljön és deploy-olódjon a projekt.
