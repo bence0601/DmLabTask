@@ -1,7 +1,7 @@
 import './App.css';
 import ForecastButton from './components/forecast-button';
 import DailyWeatherButton from './components/daily-weather-button';
-import BarChartPlaceholder from './components/bar-chart';
+import BarChartPlaceholder from './components/bar-chart-temp';
 
 function App() {
   return (
