@@ -11,4 +11,4 @@ This is a project to show of my skills in Python, Scraping from API-s, visualizi
 - utolag: a fetch_for_today vagy fetch_for_Week functiont lehetett volna megírni ugy is, hogy a frontendrol beolvassa, mi van a gombon, ezt atadom egy parameterkent a functionnek, és ettől függően fordul le a kód. Bár ezt nem lett volna utólag implementálni, szerintem átláthatóbb két külön function+ Clean Code könyvre hivatkoznek itt, ha elolvassuk a function nevet, nem kell a functiont végigolvassuk, és pontosan az fog történni, amire számítunk
 -api key-t lehetne ugye egy sessionstorage-ban tárolni, vagy mégjobb lenne mondjuk egy JWT token, amiben a user data mellé bedobjuk a tokent
 - esetleg ha nagyobb/komplexebb app lenne, akkor egy main.py hasznos lehet, de itt szvsz elég volt egy app.py
-- 
+- oszlopdiagrammokat hasznaltam a frontenden, egy kutatas kimutatta, hogy ezt a legkonnyebb leolvasni az embereknek
