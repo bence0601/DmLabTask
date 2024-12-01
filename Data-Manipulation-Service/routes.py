@@ -1,12 +1,20 @@
 from flask import Blueprint,jsonify,request
 import requests
+from services.forecast import Forecast
 
 data_manipulation_bp = Blueprint("data_manipulation", __name__)
 
 
 @data_manipulation_bp.route("/forecast-for-city", methods=["GET"])
 def create_forecast_for_city():
-    pass
+    city = request.args.get('q')
+    
+    if not city:
+        return jsonify({"error: Kérlek adj meg egy városnevet!"}), 400
+    forecaster = Forecast()
+    result = forecaster.create_forecast_for_city(city)
+    return jsonify(result)
+
 
 
 
