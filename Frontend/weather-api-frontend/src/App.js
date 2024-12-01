@@ -10,8 +10,8 @@ function App() {
       <h1>Hello, this is my React project</h1>
       <ForecastButton />
       <DailyWeatherButton/>
-      <TempBarChart/>
       <SearchBar/>
+      <TempBarChart/>
     </div>
   );
 }

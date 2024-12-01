@@ -8,8 +8,7 @@ data_collection_bp = Blueprint("data_collection", __name__)
 
 @data_collection_bp.route("/fetch-weather", methods=["GET"])
 def fetch_weather_for_specific_day():
-    # city = request.args.get('city')
-    city = "Debrecen"
+    city = request.args.get('city')
     if not city:
         return jsonify({"error: Kérlek adj meg egy városnevet!"}), 400
     
