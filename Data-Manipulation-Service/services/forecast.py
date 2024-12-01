@@ -102,7 +102,7 @@ class Forecast:
             cursor.execute(query, (city_id, six_days_ago, today))
             rows = cursor.fetchall()
             
-        if len(rows) != 7:  # Ha nincs elég adat, nem tudunk előrejelzést készíteni
+        if len(rows) != 7:  
             print(str(len(rows)) + " ennyi adat van")
             print("Nincs elegendő adat az előző hétről.")
             return None
@@ -110,14 +110,15 @@ class Forecast:
         
         dates = []
         temps = []
-        winds = []
-        precips = []
+        winds = []  
+        precips = []  
+
         
         for row in rows:
-            dates.append(row[0])  # Dátum
-            temps.append(row[1])  # Hőmérséklet
-            winds.append(row[2])  # Szél
-            precips.append(row[3])  # Csapadék
+            dates.append(row[0])  
+            temps.append(row[1]) 
+            winds.append(row[2])  
+            precips.append(row[3])  
             
         query_additional = """
         SELECT date, avg_temp_c, avg_wind_mph, avg_precip_mm 
@@ -135,26 +136,26 @@ class Forecast:
         last_date = dates[-1] # Az utolsó adat dátuma
         for row in additional_rows:
             current_date = row[0]
-            if (last_date - current_date).days <= 3:  # Ha a dátum eltérés nem nagyobb mint 3 nap
-                dates.append(row[0])  # Dátum
-                temps.append(row[1])  # Hőmérséklet
-                winds.append(row[2])  # Szél
-                precips.append(row[3])  # Csapadék
-                last_date = current_date  # Frissítjük az utolsó dátumot
+            if (last_date - current_date).days <= 3:  
+                dates.append(row[0])  
+                temps.append(row[1])  
+                winds.append(row[2])  
+                precips.append(row[3])  
+                last_date = current_date  
             else:
-                break  # Ha már túl nagy a dátumeltérés, akkor nem vesszük figyelembe a további adatokat
+                break  
 
-    # Ha az adatok között nincs elég adat (pl. csak 5 adat van), akkor nem tudunk előrejelzést készíteni
+    
         if len(dates) < 7:
             print("Nem elég adat áll rendelkezésre az előrejelzéshez.")
             return None 
             
-        X = list(range(len(dates)))  # 0-tól 6-ig, mivel 7 nap adatunk van
-        X = [[x] for x in X]  # Módosítjuk, hogy megfelelő formátumot kapjon
+        X = list(range(len(dates))) 
+        X = [[x] for x in X] 
         
         y_temp = temps
         model_temp = LinearRegression().fit(X, y_temp)
-        temp_forecast = model_temp.predict([[len(dates)], [len(dates) + 1], [len(dates) + 2]])  # 3 napra előrejelzés
+        temp_forecast = model_temp.predict([[len(dates)], [len(dates) + 1], [len(dates) + 2]]) 
 
         
         y_wind = winds
@@ -186,7 +187,6 @@ class Forecast:
         },
     }
 
-        print(forecast)
         return forecast
 
     
@@ -210,5 +210,7 @@ class Forecast:
             else:
                 city_data_from_api = Forecast.fetch_weather_data_if_needed(city)
                 Forecast.forecast_logic(existing_id,city)  
+                
+    
           
         

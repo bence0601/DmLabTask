@@ -29,7 +29,6 @@ const WeatherSearch = () => {
 
   return (
     <div>
-      <h1>Időjárás kereső</h1>
       <input
         type="text"
         value={city}
