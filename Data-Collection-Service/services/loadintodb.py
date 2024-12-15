@@ -6,23 +6,14 @@ from datetime import datetime
 
 
 class CityDataManager():
-    
-    db_connection_string = (
-    "DRIVER={ODBC Driver 17 for SQL Server};"
-    "SERVER=localhost,1433;"  # SQL Server instance, using localhost and the default port
-    "DATABASE=WEATHERDB;"      # Your database name
-    "UID=sa;"                  # Your SQL Server username
-    "PWD=My8CharacterPassword" # Your SQL Server password
-)
-            
     @staticmethod   
     def CheckIfCityExistsInDb(city):
         load_dotenv()
-        # db_connection_string = os.getenv("DB_CONNECTION")
+        db_connection_string = os.getenv("DB_CONNECTION_STRING")
 
         try:
 
-            connection = pyodbc.connect(CityDataManager.db_connection_string)
+            connection = pyodbc.connect(db_connection_string)
             cursor = connection.cursor()
             
             query = """SELECT id FROM cities WHERE city_name = ?;"""
@@ -44,8 +35,10 @@ class CityDataManager():
     @staticmethod
     def CheckIfCityExistsOnDate(city_id,date):
         load_dotenv()
+        db_connection_string = os.getenv("DB_CONNECTION_STRING")
+
         try:
-            connection = pyodbc.connect(CityDataManager.db_connection_string)
+            connection = pyodbc.connect(db_connection_string)
             cursor = connection.cursor()
             
             query = """SELECT 1 FROM aggregatedweatherdata WHERE city_id = ? AND date = ?;"""
@@ -64,8 +57,10 @@ class CityDataManager():
         
     @staticmethod           
     def addCityToDb(data):
+        load_dotenv()
+        db_connection_string = os.getenv("DB_CONNECTION_STRING")
         try:
-            connection = pyodbc.connect(CityDataManager.db_connection_string)
+            connection = pyodbc.connect(db_connection_string)
             cursor = connection.cursor()
             
             city_name = data["location"]["name"]
