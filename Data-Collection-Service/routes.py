@@ -20,7 +20,7 @@ def fetch_weather_for_specific_day():
 
 @data_collection_bp.route("/fetch-weather-for-days", methods=["GET"])
 def fetch_weather_for_7_days():
-    city = request.args.get('q')
+    city = request.args.get('city')
     
     if not city:
         return jsonify({"error": "Kérlek adj meg egy városnevet!"}), 400
