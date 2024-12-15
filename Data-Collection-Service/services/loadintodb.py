@@ -2,10 +2,22 @@ import os
 import pyodbc
 from dotenv import load_dotenv
 from datetime import datetime
+import logging
+
+load_dotenv()
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 
 
 
 class CityDataManager():
+    
+    @staticmethod
+    def _get_connection():
+        db_connection_string = os.getenv("DB_CONNECTION_STRING")
+        return pyodbc.connect(db_connection_string)
+    
     @staticmethod   
     def GetCityIdFromDb(city):
         load_dotenv()
