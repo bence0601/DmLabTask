@@ -63,7 +63,6 @@ class CityDataManager:
         try:
             with CityDataManager._get_connection() as connection:
                 with connection.cursor() as cursor:
-                    # Insert city if not exists
                     if not city_id:
                         logging.info(f"City {city_name} does not exist, inserting...")
                         cursor.execute("INSERT INTO cities (city_name) VALUES (?);", (city_name,))
@@ -77,7 +76,6 @@ class CityDataManager:
 
                     logging.info(f"Adding data for city {city_name} and date {date}.")
                     
-                    # Prepare and insert hourly data
                     hourly_data = data["forecast"]["forecastday"][0]["hour"]
                     records = [
                         (
@@ -95,7 +93,6 @@ class CityDataManager:
                         VALUES (?, ?, ?, ?, ?, ?);
                     """, records)
 
-                    # Prepare and insert aggregated data
                     aggregated_data = data["forecast"]["forecastday"][0]["day"]
                     cursor.execute("""
                         INSERT INTO aggregatedweatherdata
