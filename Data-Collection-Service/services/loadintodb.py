@@ -25,7 +25,7 @@ class CityDataManager:
         return datetime.strptime(date_str, format)
 
     @staticmethod
-    def GetCityIdFromDb(city):
+    def get_city_id_from_db(city):
         """Get the city ID from the database based on city name"""
         try:
             with CityDataManager._get_connection() as connection:
@@ -39,7 +39,7 @@ class CityDataManager:
             return None
 
     @staticmethod
-    def CheckIfCityExistsOnDate(city_id, date):
+    def check_if_city_exists_on_date(city_id, date):
         """Check if data exists for a specific city and date"""
         try:
             with CityDataManager._get_connection() as connection:
@@ -53,10 +53,10 @@ class CityDataManager:
             return False
 
     @staticmethod
-    def addCityToDb(data):
+    def add_city_to_db(data):
         """Add city and weather data to the database"""
         city_name = data["location"]["name"]
-        city_id = CityDataManager.GetCityIdFromDb(city_name)
+        city_id = CityDataManager.get_city_id_from_db(city_name)
 
         try:
             with CityDataManager._get_connection() as connection:
@@ -68,7 +68,7 @@ class CityDataManager:
                         city_id = cursor.execute("SELECT id FROM cities WHERE city_name = ?;", (city_name,)).fetchone()[0]
 
                     date = data["forecast"]["forecastday"][0]["date"]
-                    if CityDataManager.CheckIfCityExistsOnDate(city_id, date):
+                    if CityDataManager.check_if_city_exists_on_date(city_id, date):
                         logging.info(f"Data already exists for city {city_name} and date {date}. Skipping.")
                         return
 
