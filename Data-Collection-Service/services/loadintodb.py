@@ -5,11 +5,9 @@ from datetime import datetime
 import logging
 
 
-# Alapértelmezett környezeti változók betöltése egyszer
 load_dotenv()
 
 
-# Beállítjuk a naplózást
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
