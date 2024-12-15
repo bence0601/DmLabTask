@@ -7,7 +7,7 @@ from datetime import datetime
 
 class CityDataManager():
     @staticmethod   
-    def CheckIfCityExistsInDb(city):
+    def GetCityIdFromDb(city):
         load_dotenv()
         db_connection_string = os.getenv("DB_CONNECTION_STRING")
 
@@ -64,7 +64,7 @@ class CityDataManager():
             cursor = connection.cursor()
             
             city_name = data["location"]["name"]
-            city_id = CityDataManager.CheckIfCityExistsInDb(city_name)
+            city_id = CityDataManager.GetCityIdFromDb(city_name)
             
             # Check if the city exists
             if city_id:
