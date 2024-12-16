@@ -201,9 +201,9 @@ class Forecast:
                 print("Nem lehet megjósolni az időjárást a kért városra, mert erre a városra nincsenek adatok a központi db-ben")
                 return None 
             else:
+                existing_id = Forecast.get_id_of_city(city)
                 Forecast.forecast_logic(existing_id,city)
         else:
-            pass
             data_from_last_week = Forecast.check_for_fresh_weather_data(existing_id)
             if data_from_last_week:
                 Forecast.forecast_logic(existing_id,city)
