@@ -204,7 +204,7 @@ class Forecast:
                 },
             },
         }
-
+        print(forecast)
         return forecast
 
     @staticmethod
