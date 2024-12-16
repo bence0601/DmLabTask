@@ -15,13 +15,11 @@ class CityDataManager:
 
     @staticmethod
     def _get_connection():
-        """Database connection helper"""
         db_connection_string = os.getenv("DB_CONNECTION_STRING")
         return pyodbc.connect(db_connection_string)
 
     @staticmethod
     def _convert_to_datetime(date_str, format="%Y-%m-%d %H:%M"):
-        """Utility to convert string to datetime object"""
         return datetime.strptime(date_str, format)
 
     @staticmethod

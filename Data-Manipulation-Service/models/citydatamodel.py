@@ -6,7 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 load_dotenv()
 
-connection_string = os.getenv("DB_CONNECTION")
+connection_string = os.getenv("DB_CONNECTION_FOR_ORM")
 if not connection_string:
     raise ValueError("DB_CONNECTION környezeti változó nincs beállítva.")
 print(connection_string)
