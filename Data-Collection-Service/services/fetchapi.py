@@ -5,7 +5,7 @@ from services.loadintodb import CityDataManager
 from datetime import datetime, timedelta
 import logging
 
-https://api.openweathermap.org/data/2.5/weather?q=Szolnok&appid=410b77bb7ea5e4483af51a593d71c09d
+
 load_dotenv() 
 
 logging.basicConfig(
