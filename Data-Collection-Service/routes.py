@@ -21,16 +21,4 @@ def fetch_weather_for_today():
         logger.error(f"Hiba történt az időjárás lekérése során: {e}")
         return jsonify({"status": "error", "message": "Nem sikerült lekérni az adatokat."}), 500
 
-@data_collection_bp.route("/fetch-weather-for-days", methods=["GET"])
-def fetch_weather_for_7_days():
-    city = request.args.get('city')
-    if not city:
-        return jsonify({"status": "error", "message": "Kérlek adj meg egy városnevet!"}), 400
 
-    collector = DataCollector()
-    try:
-        weather_forecast = collector.fetch_data_for_week(city)
-        return jsonify({"status": "success", "data": weather_forecast})
-    except Exception as e:
-        logger.error(f"Hiba történt az időjárás előrejelzés lekérése során: {e}")
-        return jsonify({"status": "error", "message": "Nem sikerült lekérni az adatokat."}), 500

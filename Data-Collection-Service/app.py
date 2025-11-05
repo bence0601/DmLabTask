@@ -1,6 +1,13 @@
 from flask import Flask
 from routes import data_collection_bp
 from flask_cors import CORS 
+import logging
+from dotenv import load_dotenv
+
+logging.basicConfig(filename="Data_Collection_Service.log",encoding="utf-8")
+logging.getLogger().setLevel(level=logging.ERROR)
+
+load_dotenv() 
 
 
 app = Flask(__name__)
