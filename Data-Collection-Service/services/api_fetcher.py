@@ -1,52 +1,64 @@
+##Standard libs, 3rd party, custom moduls
 import os
 import logging
 from datetime import datetime, timedelta
 
 import requests
 
-from services.db_importer import CityDataManager
+from services.db_loader import CityDataManager
+from exception import DataCollectionServiceException, ApiKeyNotFound,ApiKeyInvalid
 
 logger = logging.getLogger(__name__)  
 
 class DataCollector:
+    base_url = os.getenv("BASE_URL")
+
     def __init__(self):
         self.weather_data = []  
-
-
-
-
+        self.api_key = self._get_api_key()
+        
+    @staticmethod
+    def _get_api_key() -> str:
+        api_key = os.getenv("API_KEY")
+        if not api_key:
+            logging.error("API Key invalid or missing. Please make sure that you have a correct one!")
+            raise ApiKeyNotFound("Api Key not found in environment variables")
+        return api_key
+            
     def fetch_data_for_today(self, city):
-        apikey = os.getenv("API_KEY") ## Ez csak lokál marad itt, deploy után átrakom aws secretbe,
-        url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={apikey}" ## ez mehetne egy base url-rel a konstruktorba, és ha bővítésre kerülne az osztály, akkor függvényenként lehetne megszabni, hogy milyen plusz paraméterek kellenének az url-be
+        ##If more functions would exist, it would make sense to create a url builder
+        url = self.base_url+f"?q={city}&appid={self.api_key}" 
 
-        if not apikey: ## Ide jöhet majd saját exception, 
-            logging.error("API Key invalid or missing. Please make sure you have a correct one!")
-            raise KeyError("API Key invalid. Please make sure you have a correct one!")
-        ##Ezt ki lehetne rakni egy külön függvénybe, ami csak az api hivasert felelős
         try:
-            response = requests.get(url)
-            response.raise_for_status()  
+            response = requests.get(url,timeout=10)
             
             if response.status_code == 401:
-                logging.error("API error 401: Unauthorized. Invalid API key.")
-                raise Exception(f"API hiba: 401 - Unauthorized, invalid API key")
-            elif response.status_code == 404:
-                logging.error(f"API error 404: City '{city}' not found.")
-                raise Exception(f"API hiba: 404 - City not found")
-            
-            data = response.json()
-            self.weather_data.append(data)  
-
-            CityDataManager.add_city_to_db(data)
-
-            logging.info(f"Weather data for {city} for today fetched successfully.")
-            return data
+                raise ApiKeyInvalid("Invalid API key. Please check your OpenWeather API key.")
         
-        except requests.exceptions.HTTPError as errh:
-            logging.error(f"HTTP Error: {errh} - Could not fetch data for {city} for today")
-            raise Exception(f"API hiba: {response.status_code}") from errh
-        except requests.exceptions.RequestException as err:
-            logging.error(f"Request Exception: {err} - Could not fetch data for {city} for today")
-            raise Exception(f"API hiba: {response.status_code}") from err
+            if response.status_code == 404:
+                raise ValueError(f"City '{city}' not found. Please check the city name.")
+                
+            response.raise_for_status()
+            
+        except DataCollectionServiceException as e:
+            logger.error(e)
+            raise 
+        except ValueError as e:
+            logger.error(e)
+            raise
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Request failed for {city}: {e}")
+            raise
+
+            
+        logger.info(f"Successfully fetched weather data for {city}")
+        
+        data = response.json()
+        self.weather_data.append(data)  
+        ##In a bigger project, this code be a request to a separate service, with a rabbitmq or something
+        CityDataManager.add_city_to_db(data)
+
+
+
 
 

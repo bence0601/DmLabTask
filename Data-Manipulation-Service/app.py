@@ -1,6 +1,10 @@
 from flask import Flask
 from routes import data_manipulation_bp
 from flask_cors import CORS 
+import os
+from dotenv import load_dotenv
+
+load_dotenv() 
 
 
 app = Flask(__name__)
