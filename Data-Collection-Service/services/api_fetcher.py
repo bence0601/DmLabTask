@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 
 import requests
 
-from services.db_loader import CityDataManager
+from services.db_writer import CityDataManager
 from exception import DataCollectionServiceException, ApiKeyNotFound,ApiKeyInvalid
 
 logger = logging.getLogger(__name__)  
