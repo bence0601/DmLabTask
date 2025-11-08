@@ -2,6 +2,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 class DataCollectionServiceException(Exception):
     """Base Exception"""
 
@@ -14,16 +15,19 @@ class DataCollectionServiceException(Exception):
             return f"{self.message} (Error Code: {self.error_code})"
         return self.message
 
-    
 
 class ApiKeyNotFound(DataCollectionServiceException):
     """Raised when an Api Key is not found in .env file"""
+
     pass
+
 
 class ApiKeyInvalid(DataCollectionServiceException):
     """Raised when Open Weather Api throws unauthorized, for missing api key"""
+
     pass
 
-## If i would add retry-mechanism or other exception handling, 
-# it would be nice to create a handle_exception() functions, 
+
+## If i would add retry-mechanism or other exception handling,
+# it would be nice to create a handle_exception() functions,
 # so there would be less boilerplate code through the codebase

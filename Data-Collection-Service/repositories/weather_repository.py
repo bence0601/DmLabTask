@@ -3,15 +3,15 @@ import random
 
 from sqlalchemy.orm import Session
 
-from models.data_models import WeatherData,City
+from models.data_models import WeatherData, City
 
 
-def create_weather_data(session:Session, city_id:int) -> int:
+def create_weather_data_for_preseed(session: Session, city_id: int) -> int:
 
-    today = datetime.now().date()
+    today = datetime.datetime.now().date()
 
     weather_records = []
-    for days_ago in range(30, -1, -1):
+    for days_ago in range(29, -1, -1):
         day = today - datetime.timedelta(days=days_ago)
 
         weather = WeatherData(
@@ -26,8 +26,8 @@ def create_weather_data(session:Session, city_id:int) -> int:
 
     if weather_records:
         session.add_all(weather_records)
-    
-    city = session.get(City,city_id)
+
+    city = session.get(City, city_id)
     city.data_days_count = len(weather_records)
 
     return len(weather_records)
