@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres:18
+    container_name: db
+    restart: always
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+
+  data-collection-service:
+    image: data-collection-service:latest
+    container_name: data-collection-service
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - Data-Collection-Service\.env
+    ports:
+      - "5000:5000"
+
+volumes:
+  postgres_data:
