@@ -27,7 +27,3 @@ class ApiKeyInvalid(DataCollectionServiceException):
 
     pass
 
-
-## If i would add retry-mechanism or other exception handling,
-# it would be nice to create a handle_exception() functions,
-# so there would be less boilerplate code through the codebase

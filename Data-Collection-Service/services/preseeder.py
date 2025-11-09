@@ -13,7 +13,6 @@ def preseed_database(engine):
     default_cities = ["Budapest", "New York", "Debrecen", "Lisszabon", "Bécs"]
 
     with Session(engine) as session:
-        try:
             status = session.query(SeedStatus).first()
             if status and status.seeded:
                 logger.info("Preseed already completed. Skipping.")
@@ -29,8 +28,8 @@ def preseed_database(engine):
                 while attempt <= MAX_RETRIES:
                     try:
                         with session.begin_nested():
-                            city_id = create_city(session, city_name)
-                            weather_data = create_weather_data_for_preseed(session, city_id)
+                            city = create_city(session, city_name)
+                            create_weather_data_for_preseed(session, city.id)
                             successfully_seeded.append(city_name)
                         break
                     except Exception as e:
@@ -50,11 +49,5 @@ def preseed_database(engine):
                 logger.info("Successfully seeded")
                 return
 
-            session.rollback()
-            logger.error("No cities were successfully seeded")
-            raise RuntimeError("Preseed failed for all cities")
 
-        except Exception as e:
-            session.rollback()
-            logger.critical(f"Critical error during database preseed: {e}")
 

@@ -39,8 +39,6 @@ class City(Base):
     last_fetched: Mapped[datetime.date] = mapped_column(
         Date, nullable=False, server_default=text("CURRENT_DATE")
     )  ## It automatically fill the col with current date on db-side
-    data_days_count: Mapped[int] = mapped_column(Integer, default=0)
-
     weather_data: Mapped[list["WeatherData"]] = relationship(
         "WeatherData", back_populates="city", cascade="all, delete-orphan"
     )  ## forward reference for WeatherData
@@ -57,7 +55,6 @@ class WeatherData(Base):
     temperature: Mapped[float] = mapped_column(Float, nullable=False)  ## celsius
     wind: Mapped[float] = mapped_column(Float, nullable=False)  ## km/h
     humidity: Mapped[float] = mapped_column(Float, nullable=False)  ## percentage
-    precipitation: Mapped[float] = mapped_column(Float, nullable=False)  ## mm
 
     city: Mapped[City] = relationship("City", back_populates="weather_data")
 
