@@ -5,11 +5,15 @@ from datetime import datetime, timedelta
 
 import requests
 
-from exceptions.custom_exception import DataCollectionServiceException, ApiKeyNotFound, ApiKeyInvalid
+from exceptions.custom_exception import (
+    DataCollectionServiceException,
+    ApiKeyNotFound,
+    ApiKeyInvalid,
+)
 
-from mappers.dto_to_data_model_mapper import CityMapper,WeatherDataMapper
+from mappers.dto_to_data_model_mapper import CityMapper, WeatherDataMapper
 from mappers.open_weather_json_to_dto_mapper import WeatherApiToDtoMapper
-from repositories import city_repository,weather_repository
+from repositories import city_repository, weather_repository
 from repositories.city_repository import Session
 from models.data_models import engine
 
@@ -70,15 +74,15 @@ class DataCollector:
 
         with Session(engine) as session:
             try:
-                created_city = city_repository.create_city(session,city_model.name)
+                created_city = city_repository.create_city(session, city_model.name)
                 session.flush()
 
                 weather_dto = WeatherApiToDtoMapper.extract_weather_dto(data)
-                weather_model = WeatherDataMapper.to_model(weather_dto,created_city.id)
-                weather_repository.create_weather_data(session,weather_model)
-                
+                weather_model = WeatherDataMapper.to_model(weather_dto, created_city.id)
+                weather_repository.create_weather_data(session, weather_model)
+
                 session.commit()
             except Exception as e:
-                session.rollback()  
+                session.rollback()
                 logger.error(f"Database transaction failed: {e}")
                 raise

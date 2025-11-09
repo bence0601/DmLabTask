@@ -62,8 +62,8 @@ class WeatherData(Base):
 class SeedStatus(Base):
     __tablename__ = "seed_status"
 
-    id: Mapped[int] = Column(Integer, primary_key=True)
-    seeded: Mapped[bool] = Column(Boolean, default=False, nullable=False)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    seeded: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 
 
 def _init_db():

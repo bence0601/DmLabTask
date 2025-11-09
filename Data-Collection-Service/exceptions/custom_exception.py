@@ -26,4 +26,3 @@ class ApiKeyInvalid(DataCollectionServiceException):
     """Raised when Open Weather Api throws unauthorized, for missing api key"""
 
     pass
-

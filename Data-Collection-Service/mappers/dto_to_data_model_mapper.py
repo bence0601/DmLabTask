@@ -1,15 +1,18 @@
-from models.data_models import City,WeatherData
-from dtos.schema import CityDTO,WeatherDataDTO
+from models.data_models import City, WeatherData
+from dtos.schema import CityDTO, WeatherDataDTO
 
-class CityMapper():
+
+class CityMapper:
     @staticmethod
     def to_model(dto: CityDTO) -> City:
         return City(
             name=dto.name,
         )
 
+
 class WeatherDataMapper:
-    def to_model(dto: WeatherDataDTO, city_id : int) -> WeatherData:
+    @staticmethod
+    def to_model(dto: WeatherDataDTO, city_id: int) -> WeatherData:
         return WeatherData(
             city_id=city_id,
             date=dto.date,
