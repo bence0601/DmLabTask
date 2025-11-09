@@ -2,8 +2,8 @@ import unittest
 from unittest.mock import patch, MagicMock
 from services.forecast import Forecast
 
-class TestForecastMethods(unittest.TestCase):
 
+class TestForecastMethods(unittest.TestCase):
 
     @patch("requests.get")
     def test_fetch_weather_data_if_needed_success(self, mock_get):
@@ -31,7 +31,10 @@ class TestForecastMethods(unittest.TestCase):
         result = Forecast.fetch_weather_data_if_needed(city)
 
         # Assert that the error message is returned for failed API call
-        self.assertEqual(result, {
-            "error": "Failed to fetch weather data. Status code: 500",
-            "details": "Internal Server Error"
-        })
+        self.assertEqual(
+            result,
+            {
+                "error": "Failed to fetch weather data. Status code: 500",
+                "details": "Internal Server Error",
+            },
+        )
