@@ -16,6 +16,14 @@ def create_weather_data_for_preseed(session: Session, city_id: int) -> int:
 
     today = datetime.datetime.now().date()
 
+    existing_weather_data = session.query(WeatherData).filter(
+    WeatherData.city_id == city_id,
+    WeatherData.date == today
+    ).first()
+
+    if existing_weather_data:
+        return 0
+
     weather_records = []
     for days_ago in range(29, -1, -1):
         weather_records.append(
