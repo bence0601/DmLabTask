@@ -66,7 +66,7 @@ class DataCollector:
             logger.error(f"Request failed for {city}: {e}")
             raise
 
-        logger.info(f"Successfully fetched weather data for {city}")
+        logger.info(f"Successfully sent request weather data for {city}")
 
         data = response.json()
         city_dto = WeatherApiToDtoMapper.extract_city_dto(data)
@@ -75,6 +75,9 @@ class DataCollector:
         with Session(engine) as session:
             try:
                 created_city = city_repository.create_city(session, city_model.name)
+                if created_city is None:
+                    logger.info("There's already date for this city for this date")
+                    return None
                 session.flush()
 
                 weather_dto = WeatherApiToDtoMapper.extract_weather_dto(data)

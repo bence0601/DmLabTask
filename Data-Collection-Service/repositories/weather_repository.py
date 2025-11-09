@@ -1,12 +1,17 @@
 import datetime
 import random
+import logging
 
 from sqlalchemy.orm import Session
 
-from models.data_models import WeatherData, City
+from models.data_models import WeatherData
+
+logger = logging.getLogger(__name__)
 
 
-def create_weather_data(session: Session, weather_model: WeatherData) -> WeatherData:
+
+def create_weather_data(session: Session, weather_model: WeatherData) -> WeatherData |  None:
+        
     session.add(weather_model)
     session.flush()
     return weather_model
@@ -15,14 +20,6 @@ def create_weather_data(session: Session, weather_model: WeatherData) -> Weather
 def create_weather_data_for_preseed(session: Session, city_id: int) -> int:
 
     today = datetime.datetime.now().date()
-
-    existing_weather_data = session.query(WeatherData).filter(
-    WeatherData.city_id == city_id,
-    WeatherData.date == today
-    ).first()
-
-    if existing_weather_data:
-        return 0
 
     weather_records = []
     for days_ago in range(29, -1, -1):
