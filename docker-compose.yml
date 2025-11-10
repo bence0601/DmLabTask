@@ -1,10 +1,10 @@
 services:
-  db:
-    image: postgres:18
-    container_name: db
+  api-database:
+    image: postgres:15
+    container_name: api-db
     restart: always
     environment:
-      POSTGRES_DB: postgres
+      POSTGRES_DB: api_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mysecretpassword
     ports:
@@ -12,23 +12,53 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d api_db"]
       interval: 5s
       timeout: 3s
       retries: 10
-
 
   data-collection-service:
     image: data-collection-service:latest
     container_name: data-collection-service
     restart: always
     depends_on:
-      db:
+      api-database:
         condition: service_healthy
     env_file:
-      - Data-Collection-Service\.env
+      - Data-Collection-Service/.env
+    ports:
+      - "5001:5001"
+
+  forecast-database:
+    image: postgres:15
+    container_name: forecast-db
+    restart: always
+    environment:
+      POSTGRES_DB: forecast
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+    ports:
+      - "5433:5432" 
+    volumes:
+      - forecast_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d forecast"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  data-manipulation-service:
+    image: data-manipulation-service:latest
+    container_name: data-manipulation-service
+    restart: always
+    depends_on:
+      forecast-database:
+        condition: service_healthy
+    env_file:
+      - Data-Manipulation-Service/.env
     ports:
       - "5000:5000"
 
 volumes:
   postgres_data:
+  forecast_postgres_data:
