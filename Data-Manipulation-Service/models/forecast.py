@@ -2,7 +2,7 @@ import os
 import logging
 import datetime
 
-from sqlalchemy import Integer,Date,create_engine,Float
+from sqlalchemy import Integer,Date,create_engine,Float,String
 
 from sqlalchemy.orm import DeclarativeBase,Mapped,mapped_column
 
@@ -26,6 +26,7 @@ class ForecastModel(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     city_id: Mapped[int] = mapped_column(Integer, nullable=False)
+    city: Mapped[str] = mapped_column(String, nullable=False)
     date: Mapped[datetime.date] = mapped_column(Date, nullable=False)
     temperature: Mapped[float] = mapped_column(Float, nullable=True)
     wind: Mapped[float] = mapped_column(Float, nullable=True)
