@@ -65,10 +65,11 @@ class SeedStatus(Base):
     seeded: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 
 
-def _init_db():
+
+def init_db():
     Base.metadata.create_all(engine)
     logger.info("Database initialized")
 
 
 if __name__ == "__main__":
-    _init_db()
+    init_db()
