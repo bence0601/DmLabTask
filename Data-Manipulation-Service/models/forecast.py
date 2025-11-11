@@ -2,22 +2,21 @@ import os
 import logging
 import datetime
 
-from sqlalchemy import Integer,Date,create_engine,Float,String
+from sqlalchemy import Integer, Date, create_engine, Float, String
 
-from sqlalchemy.orm import DeclarativeBase,Mapped,mapped_column
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 if not DATABASE_URL:
     raise RuntimeError("DATABASE_URL environment variable is not set.")
 
-engine = create_engine(DATABASE_URL,echo=True)
+engine = create_engine(DATABASE_URL, echo=True)
 
 logger = logging.getLogger(__name__)
 
-class Base(
-    DeclarativeBase
-): 
+
+class Base(DeclarativeBase):
     pass
 
 
@@ -36,6 +35,7 @@ class ForecastModel(Base):
 def init_db():
     Base.metadata.create_all(engine)
     logger.info("Database initialized")
+
 
 if __name__ == "__main__":
     init_db()

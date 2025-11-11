@@ -20,8 +20,8 @@ app = Flask(__name__)
 
 CORS(app, origins=["http://localhost:3000", "http://localhost:5001"])
 
- 
-app.register_blueprint(data_manipulation_bp,url_prefix="/dms")
+
+app.register_blueprint(data_manipulation_bp, url_prefix="/dms")
 
 
 @app.route("/")

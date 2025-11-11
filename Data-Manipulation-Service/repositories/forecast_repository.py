@@ -8,14 +8,16 @@ from dtos.forecast_dto import ForecastDTO
 
 logger = logging.getLogger(__name__)
 
-def get_forecast_for_city_and_date(session : Session, city_name : str ,date: datetime.date) -> ForecastModel | None:
-        return session.query(ForecastModel).filter(
-              ForecastModel.city == city_name,
-              ForecastModel.date == date
-        ).first()
+
+def get_forecast_for_city_and_date(
+    session: Session, city_name: str, date: datetime.date
+) -> ForecastModel | None:
+    return (
+        session.query(ForecastModel)
+        .filter(ForecastModel.city == city_name, ForecastModel.date == date)
+        .first()
+    )
 
 
-def add_forecast(session: Session,forecast_to_add : ForecastDTO) -> int:
-      session.add(forecast_to_add)
-
-
+def add_forecast(session: Session, forecast_to_add: ForecastModel) -> None:
+   return session.add(forecast_to_add)

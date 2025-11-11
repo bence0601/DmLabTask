@@ -6,4 +6,3 @@ class ForecastDTO(BaseModel):
     temperature: float
     wind: float
     humidity: float  # percentage
-

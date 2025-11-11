@@ -65,7 +65,6 @@ class SeedStatus(Base):
     seeded: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 
 
-
 def init_db():
     Base.metadata.create_all(engine)
     logger.info("Database initialized")
