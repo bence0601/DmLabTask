@@ -59,6 +59,7 @@ services:
     ports:
       - "5000:5000"
 
+
 volumes:
   postgres_data:
   forecast_postgres_data:

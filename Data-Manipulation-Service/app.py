@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
-CORS(app, origins=["http://localhost:3000", "http://data-collection-service:5001"])
+CORS(app, origins=["http://frontend:3000", "http://data-collection-service:5001"])
 
 register_error_handler(app)
 app.register_blueprint(data_manipulation_bp, url_prefix="/dms")
