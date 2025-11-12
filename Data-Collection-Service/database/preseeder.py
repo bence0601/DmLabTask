@@ -2,8 +2,8 @@ import logging
 
 from sqlalchemy.orm import Session
 
-from models.data_models import SeedStatus
-from repositories.city_repository import create_city
+from models.data_models import SeedStatus, City
+from repositories.city_repository import add_city
 from repositories.weather_repository import create_weather_data_for_preseed
 
 logger = logging.getLogger(__name__)
@@ -29,7 +29,9 @@ def preseed_database(engine):
             while attempt <= MAX_RETRIES:
                 try:
                     with session.begin_nested():
-                        city = create_city(session, city_name)
+                        new_city_model = City(name=city_name)
+                        city = add_city(session, new_city_model)
+                        session.flush()
                         create_weather_data_for_preseed(session, city.id)
                         successfully_seeded.append(city_name)
                     break

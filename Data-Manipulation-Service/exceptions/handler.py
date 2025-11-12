@@ -2,46 +2,31 @@ from flask import jsonify
 import logging
 
 from exceptions.custom_exception import (
-    ApiKeyInvalid,
-    ApiKeyNotFound,
-    DataCollectionServiceException,
+    DataManipulationServiceException,
+    NotEnoughDataException,
 )
 
 logger = logging.getLogger(__name__)
 
 
 def register_error_handler(app):
-    @app.errorhandler(ApiKeyNotFound)
-    def handle_api_key_not_found(error):
-        logger.error(f"API key not found: {error}")
+    @app.errorhandler(NotEnoughDataException)
+    def handle_not_enough_data(error):
+        logger.error(f"Data was insufficent for creating forecast")
         return (
             jsonify(
                 {
                     "status": "error",
-                    "message": "API key not found in configuration file",
+                    "message": "Not enough weather data for creating forecast",
                     "error_code": error.error_code,
                 }
             ),
-            500,
+            422,
         )
 
-    @app.errorhandler(ApiKeyInvalid)
-    def handle_api_key_invalid(error):
-        logger.error(f"API key invalid: {error}")
-        return (
-            jsonify(
-                {
-                    "status": "error",
-                    "message": "API key invalid",
-                    "error_code": error.error_code,
-                }
-            ),
-            401,
-        )
-
-    @app.errorhandler(DataCollectionServiceException)
-    def handle_data_collection_exception(error):
-        logger.error(f"Data collection error: {error}")
+    @app.errorhandler(DataManipulationServiceException)
+    def handle_data_manipulation_exception(error):
+        logger.error(f"Data manipulation error: {error}")
         return (
             jsonify(
                 {

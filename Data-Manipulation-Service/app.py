@@ -5,6 +5,9 @@ from dotenv import load_dotenv
 from flask import Flask
 from flask_cors import CORS
 
+from exceptions.handler import register_error_handler
+
+
 load_dotenv()
 
 from routes import data_manipulation_bp
@@ -18,10 +21,10 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
-CORS(app, origins=["http://localhost:3000", "http://localhost:5001"])
+CORS(app, origins=["http://localhost:3000", "http://data-collection-service:5001"])
 
- 
-app.register_blueprint(data_manipulation_bp,url_prefix="/dms")
+register_error_handler(app)
+app.register_blueprint(data_manipulation_bp, url_prefix="/dms")
 
 
 @app.route("/")
@@ -36,4 +39,5 @@ if __name__ == "__main__":
 
     init_db()
 
+    logger.info("Starting Flask dev server on %s:%s (debug=%s)", host, port, debug)
     app.run(host=host, port=port, debug=debug, use_reloader=False)

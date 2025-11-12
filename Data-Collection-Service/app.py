@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
-CORS(app, origins="http://localhost:5000")
+CORS(app, origins="http://data-manipulation-service:5000")
 
 register_error_handler(app)
 app.register_blueprint(data_collection_bp, url_prefix="/dcs")
