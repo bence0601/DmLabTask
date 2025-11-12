@@ -15,9 +15,9 @@ data_collection_bp = Blueprint("data_collection_bp", __name__)
 
 @data_collection_bp.route("/get-data-for-forecast/<city>", methods=["GET"])
 def get_existing_weather_for_forecast(city):
-    existing_city = CityService.check_existing_city(city)
+    existing_city_id = CityService.check_existing_city(city)
 
-    if existing_city is None:
+    if existing_city_id is None:
         client = OpenWeatherClient()
         json_data = client.fetch_from_api(city)
 
@@ -27,6 +27,7 @@ def get_existing_weather_for_forecast(city):
                     {
                         "success": False,
                         "message": "City not found in database or Open Weather API",
+                        "data": None,
                     }
                 ),
                 404,
@@ -34,10 +35,10 @@ def get_existing_weather_for_forecast(city):
 
         city_dto = WeatherApiToDtoMapper.extract_city_dto(json_data)
         city_model = CityMapper.to_model(city_dto)
-        new_city = CityService.add_city_data(city_model.name)
+        new_city_id = CityService.add_city_data(city_model)
 
         weather_dto = WeatherApiToDtoMapper.extract_weather_dto(json_data)
-        weather_model = WeatherDataMapper.to_model(weather_dto, new_city.id)
+        weather_model = WeatherDataMapper.to_model(weather_dto, new_city_id)
         WeatherService.add_weather_data(weather_model)
 
         return (
@@ -45,12 +46,13 @@ def get_existing_weather_for_forecast(city):
                 {
                     "success": False,
                     "message": "City data fetched from API, but insufficient historical data for forecast (requires at least 30 days)",
+                    "data": None,
                 }
             ),
-            200,
+            422,
         )
 
-    existing_weather_data = WeatherService.get_weather_for_30_days(existing_city.id)
+    existing_weather_data = WeatherService.get_weather_for_30_days(existing_city_id)
 
     if isinstance(existing_weather_data, int):
         return (
@@ -58,9 +60,10 @@ def get_existing_weather_for_forecast(city):
                 {
                     "success": False,
                     "message": f"Insufficient data for forecast. Only {existing_weather_data} days available, 30 required",
+                    "data": None,
                 }
             ),
-            200,
+            422,
         )
 
     temps, hums, winds = existing_weather_data
@@ -73,6 +76,7 @@ def get_existing_weather_for_forecast(city):
                     "temperatures": temps,
                     "humidity": hums,
                     "wind_speeds": winds,
+                    "city": city,
                 },
             }
         ),

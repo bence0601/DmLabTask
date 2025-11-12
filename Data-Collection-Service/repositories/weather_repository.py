@@ -11,9 +11,7 @@ from models.data_models import WeatherData
 logger = logging.getLogger(__name__)
 
 
-def create_weather_data(
-    session: Session, weather_model: WeatherData
-) -> None:
+def create_weather_data(session: Session, weather_model: WeatherData) -> None:
     return session.add(weather_model)
 
 

@@ -34,6 +34,7 @@ class OpenWeatherClient:
             response.raise_for_status()
             logger.info(f"Successfully fetched weather data for {city}")
 
+            logger.info(response.json())
             return response.json()
         except requests.RequestException as e:
             logger.error(f"Request failed for city {city}: {e}")

@@ -24,7 +24,6 @@ class ForecastModel(Base):
     __tablename__ = "forecast"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    city_id: Mapped[int] = mapped_column(Integer, nullable=False)
     city: Mapped[str] = mapped_column(String, nullable=False)
     date: Mapped[datetime.date] = mapped_column(Date, nullable=False)
     temperature: Mapped[float] = mapped_column(Float, nullable=True)

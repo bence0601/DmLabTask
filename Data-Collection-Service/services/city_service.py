@@ -10,13 +10,17 @@ logger = logging.getLogger(__name__)
 class CityService:
 
     @staticmethod
-    def add_city_data(data):
+    def add_city_data(data) -> int:
         with Session(engine) as session, session.begin():
-            new_city = city_repository.create_city(session, data)
-            return new_city
+            new_city = city_repository.add_city(session, data)
+            session.flush()
+            city_id = new_city.id
+            return city_id
 
     @staticmethod
-    def check_existing_city(data):
+    def check_existing_city(data) -> int | None:
         with Session(engine) as session, session.begin():
-            existing_city = city_repository.check_existing_city(session, data.name)
-            return existing_city
+            existing_city = city_repository.check_existing_city(session, data)
+            if existing_city:
+                return existing_city.id
+            return None

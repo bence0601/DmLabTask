@@ -1,9 +1,9 @@
 from flask import Blueprint, jsonify, request
-import requests
 from services.forecast_service import ForecastService
 import logging
 import requests
 from clients.data_collection_service_client import DataCollectorServiceClient
+from mappers.forecast_mapper import model_to_dto
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +15,8 @@ def create_forecast_for_city(city):
     forecast_for_city = ForecastService.check_existing_forecast(city)
     if forecast_for_city is None:
         client = DataCollectorServiceClient()
-        client.fetch_weather(city)
+        weather_data = client.fetch_weather(city)
+        new_forecast = ForecastService.create_forecast_for_city(weather_data)
+        return jsonify(new_forecast.model_dump())
     else:
-        new_forecast = ForecastService.create_forecast_for_city(city)
-        return jsonify(new_forecast)
+        return jsonify(forecast_for_city.model_dump())
